@@ -7,11 +7,13 @@ import java.util.concurrent.atomic.AtomicLong;
 import org.springframework.context.annotation.Bean;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import io.github.resilience4j.ratelimiter.RateLimiter;
 import io.github.resilience4j.ratelimiter.RateLimiterConfig;
 import io.github.resilience4j.ratelimiter.RateLimiterRegistry;
 
+@RestController
 public class RateLimiterController {
 	private final AtomicLong counter = new AtomicLong();
 	private RateLimiter rateLimiter;
@@ -32,7 +34,7 @@ public class RateLimiterController {
 		 * waiting until maximum of 10 seconds.
 		 */
 		RateLimiterConfig config = RateLimiterConfig.custom().limitRefreshPeriod(Duration.ofMillis(5000))
-				.limitForPeriod(101).timeoutDuration(Duration.ofMillis(30000)).build();
+				.limitForPeriod(10).timeoutDuration(Duration.ofMillis(30000)).build();
 
 		// Create registry
 		RateLimiterRegistry rateLimiterRegistry = RateLimiterRegistry.of(config);
